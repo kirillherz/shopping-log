@@ -31,6 +31,7 @@ class CheckFromShop(models.Model):
 
     shop = models.ForeignKey(Shop, on_delete=models.PROTECT)
     date = models.DateField()
+    total = models.DecimalField(max_digits=15, decimal_places=2)
 
     def __str__(self):
         return "Чек из магазина " + self.shop.name

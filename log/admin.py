@@ -1,5 +1,5 @@
 from django.contrib import admin
-from log.models import Category, Product, CheckFromShop
+from log.models import Category, Product, CheckFromShop, Shop
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -19,3 +19,7 @@ class CheckFromShopAdmin(admin.ModelAdmin):
 
 admin.site.register(CheckFromShop, CheckFromShopAdmin)
 
+class ShopAdmin(admin.ModelAdmin):
+    pass
+
+admin.site.register(Shop, ShopAdmin)

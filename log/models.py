@@ -2,7 +2,7 @@ from django.db import models
 
 
 class Category(models.Model):
-    
+
     name = models.CharField(max_length=50)
     parent_category = models.ForeignKey(
         'self', blank=True,  null=True,
@@ -25,6 +25,12 @@ class Shop(models.Model):
 
     def __str__(self):
         return self.name
+
+
+class Day(models.Model):
+
+    date = models.DateField(unique=True)
+    total = models.DecimalField(max_digits=15, decimal_places=2)
 
 
 class CheckFromShop(models.Model):

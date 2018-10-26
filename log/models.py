@@ -26,3 +26,15 @@ class Shop(models.Model):
         return self.name
 
 
+class CheckFromShop(models.Model):
+    shop = models.ForeignKey(Shop, on_delete=models.PROTECT)
+    date = models.DateField()
+
+    def __str__(self):
+        return "Чек из магазина " + self.shop.name
+
+    class Meta:
+        verbose_name = 'Чек'
+        verbose_name_plural = 'Чеки'
+
+

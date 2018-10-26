@@ -2,6 +2,7 @@ from django.db import models
 
 
 class Category(models.Model):
+    
     name = models.CharField(max_length=50)
     parent_category = models.ForeignKey(
         'self', blank=True,  null=True,
@@ -27,6 +28,7 @@ class Shop(models.Model):
 
 
 class CheckFromShop(models.Model):
+
     shop = models.ForeignKey(Shop, on_delete=models.PROTECT)
     date = models.DateField()
 
@@ -39,6 +41,7 @@ class CheckFromShop(models.Model):
 
 
 class Product(models.Model):
+
     name = models.CharField(max_length=50)
     cost = models.DecimalField(max_digits=15, decimal_places=2)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)

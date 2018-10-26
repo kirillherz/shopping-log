@@ -58,8 +58,11 @@ class Product(models.Model):
         self.checkFromShop.save()
         super(Product, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        self.checkFromShop.total -= self.cost
         self.checkFromShop.save()
-        
+        super(Product, self).delete(*args, **kwargs)
+
     def __str__(self):
         return self.name
 

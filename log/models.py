@@ -49,13 +49,15 @@ class Product(models.Model):
     checkFromShop = models.ForeignKey(CheckFromShop, on_delete=models.CASCADE)
 
     def save(self, *args, **kwargs):
+        if self.id == None:
+            self.checkFromShop.total += self.cost
+        else:
+            old_product = Product.objects.get(pk=self.id)
+            self.checkFromShop.total -= old_product.cost
+            self.checkFromShop.total += self.cost
+        self.checkFromShop.save()
         super(Product, self).save(*args, **kwargs)
-        products = Product.objects.filter(
-            checkFromShop=self.checkFromShop).values()
-        sum = 0
-        for i in products:
-            sum += i['cost']
-        self.checkFromShop.total = sum
+
         self.checkFromShop.save()
         
     def __str__(self):

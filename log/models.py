@@ -15,3 +15,14 @@ class Category(models.Model):
         verbose_name_plural = 'Категории'
 
 
+class Shop(models.Model):
+    name = models.CharField(max_length=50)
+
+    class Meta:
+        verbose_name = 'Магазин'
+        verbose_name_plural = 'Магазины'
+
+    def __str__(self):
+        return self.name
+
+

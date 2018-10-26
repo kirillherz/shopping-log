@@ -13,6 +13,9 @@ class ProductAdmin(admin.ModelAdmin):
     pass
 
 
+admin.site.register(Product, ProductAdmin)
+
+
 class CheckFromShopAdmin(admin.ModelAdmin):
     pass
 

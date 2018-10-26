@@ -48,6 +48,16 @@ class Product(models.Model):
     category = models.ForeignKey(Category, on_delete=models.PROTECT)
     checkFromShop = models.ForeignKey(CheckFromShop, on_delete=models.CASCADE)
 
+    def save(self, *args, **kwargs):
+        super(Product, self).save(*args, **kwargs)
+        products = Product.objects.filter(
+            checkFromShop=self.checkFromShop).values()
+        sum = 0
+        for i in products:
+            sum += i['cost']
+        self.checkFromShop.total = sum
+        self.checkFromShop.save()
+        
     def __str__(self):
         return self.name
 

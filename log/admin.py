@@ -10,7 +10,12 @@ admin.site.register(Category, CategoryAdmin)
 
 
 class ProductAdmin(admin.ModelAdmin):
-    pass
+
+    def delete_queryset(self, request, queryset):
+        for product in queryset:
+            product.checkFromShop.total -= product.cost
+            product.checkFromShop.save()
+        queryset.delete()
 
 
 admin.site.register(Product, ProductAdmin)
@@ -22,7 +27,9 @@ class CheckFromShopAdmin(admin.ModelAdmin):
 
 admin.site.register(CheckFromShop, CheckFromShopAdmin)
 
+
 class ShopAdmin(admin.ModelAdmin):
     pass
+
 
 admin.site.register(Shop, ShopAdmin)

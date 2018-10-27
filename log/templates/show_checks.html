@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8" />
+    <title>Чеки</title>
+    <style type="text/css">
+        .app {
+            display: flex;
+            flex-direction: column;
+            flex-wrap: wrap;
+            height: 85px;
+            align-content: flex-start;
+        }
+
+        .test {
+            background: gainsboro;
+            height: 10px;
+            width: 10px;
+            margin: 1px;
+        }
+    </style>
+    <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+</head>
+
+<body>
+    <div id="app" class="app">
+        <div v-for="day in data">
+            <div class="test" v-bind:id="day"></div>
+        </div>
+
+    </div>
+    <script>
+        const app = new Vue({
+            el: "#app",
+            data: {
+                data: []
+            },
+            methods: {
+                getJson: function () {
+                    var xhr = new XMLHttpRequest();
+                    xhr.open('GET', '/get_json/', false);
+                    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    xhr.send();
+                    if (xhr.status != 200) {
+                        var jsonDayObjects = null;
+                    } else {
+                        return JSON.parse(xhr.responseText);
+                    }
+                },
+                dateToString: function (date) {
+                    var year = date.getFullYear().toString();
+                    var month = (date.getMonth() + 1).toString();
+                    if (month.length == 1) {
+                        month = "0" + month;
+                    }
+                    var day = date.getDate().toString();
+                    if (day.length == 1) {
+                        day = "0" + day;
+                    }
+                    return year + "-" + month + "-" + day
+                },
+                getMaxTotal: function (jsonObjects) {
+                    if (jsonObjects) {
+                        var objectWithMaxTotal = jsonObjects.reduce(function (max, current) {
+                            if (Number.parseFloat(current.fields.total) > Number.parseFloat(max.fields.total)) {
+                                return current
+                            } else {
+                                return max;
+                            }
+                        })
+                        return Number.parseFloat(objectWithMaxTotal.fields.total)
+                    } else {
+                        return null;
+                    }
+                }
+            },
+            created: function () {
+                var date = new Date(2018, 0, 1);
+                for (var i = 1; i <= 365; i++) {
+                    this.data.push(
+                        this.dateToString(date)
+                    );
+                    date.setDate(date.getDate() + 1);
+                }
+
+            },
+            mounted: function () {
+                var jsonDayObjects = this.getJson();
+                var onePercent = this.getMaxTotal(jsonDayObjects) / 100;
+                for (var i = 0; i != jsonDayObjects.length; i++) {
+                    var percents = jsonDayObjects[i].fields.total / onePercent;
+                    color = Number.parseInt((90 - ((0.7 * percents) + 20)) + 20);
+                    document.getElementById(jsonDayObjects[i].fields.date).style.backgroundColor = "hsl(0,100%," + color + "%)";
+                }
+            }
+        });
+    </script>
+
+</body>
+
+</html>

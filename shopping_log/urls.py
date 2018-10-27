@@ -19,5 +19,6 @@ from log.views import get_json
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('show_checks/', show_checks),
     path('get_json/', get_json)
 ]

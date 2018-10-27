@@ -3,7 +3,10 @@ from django.http import HttpResponse
 from django.core.serializers import serialize
 from log.models import Day
 
-# Create your views here.
+def show_checks(request):
+    return render(request, 'show_checks.html')
+
+
 def get_json(request):
     if request.is_ajax():
         data = serialize(

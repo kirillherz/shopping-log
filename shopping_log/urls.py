@@ -15,7 +15,7 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
-from log.views import get_json
+from log.views import show_checks, get_json
 
 urlpatterns = [
     path('admin/', admin.site.urls),

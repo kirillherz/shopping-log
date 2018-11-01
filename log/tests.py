@@ -15,11 +15,11 @@ class ProductTestCase(TestCase):
         self.category.save()
 
     def test_create_product(self):
-        prodcut = Product(
+        self.product = Product(
             name="test product",
             cost=Decimal(15.0),
             checkFromShop=self.check,
             category=self.category)
-        prodcut.save()
+        self.product.save()
         self.assertEqual(self.check.total, 15.0)
 

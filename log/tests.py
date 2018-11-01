@@ -25,3 +25,8 @@ class ProductTestCase(TestCase):
         check = product.checkFromShop
         self.assertEqual(check.total, 15.0)
 
+    def test_delete_product(self):
+        product = Product.objects.get(name="test product")
+        check = product.checkFromShop
+        product.delete()
+        self.assertEqual(check.total, 0)

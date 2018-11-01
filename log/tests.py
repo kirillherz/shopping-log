@@ -30,3 +30,10 @@ class ProductTestCase(TestCase):
         check = product.checkFromShop
         product.delete()
         self.assertEqual(check.total, 0)
+
+    def test_update_product(self):
+        product = Product.objects.get(name="test product")
+        check = product.checkFromShop
+        product.cost = 25
+        product.save()
+        self.assertEqual(check.total, 25)

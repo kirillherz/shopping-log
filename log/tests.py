@@ -2,6 +2,7 @@ from django.test import TestCase
 from log.models import Product, CheckFromShop, Shop, Category, Day
 from django.utils.timezone import now
 from decimal import Decimal
+from datetime import date
 
 
 class ProductTestCase(TestCase):
@@ -51,7 +52,7 @@ class CheckFromShopTestCase(TestCase):
         check.save()
 
     def test_create_check_from_shop(self):
-        day = Day.objects.get(date=self.check.date)
+        day = Day.objects.get(date=date(2018, 2, 2))
         self.assertEqual(day.total, 15.0)
 
     def test_update_check_from_shop(self):

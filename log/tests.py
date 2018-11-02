@@ -54,3 +54,9 @@ class CheckFromShopTestCase(TestCase):
         day = Day.objects.get(date=self.check.date)
         self.assertEqual(day.total, 15.0)
 
+    def test_update_check_from_shop(self):
+        self.check.total = Decimal(30.0)
+        self.check.save()
+        day = Day.objects.get(date=self.check.date)
+        self.assertEqual(day.total, Decimal(30.0))
+

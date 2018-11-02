@@ -44,11 +44,11 @@ class CheckFromShopTestCase(TestCase):
     def setUp(self):
         shop = Shop(name="test shop")
         shop.save()
-        self.check = CheckFromShop(
+        check = CheckFromShop(
             shop=shop,
-            date=now(),
+            date=date(2018, 2, 2),
             total=Decimal(15.0))
-        self.check.save()
+        check.save()
 
     def test_create_check_from_shop(self):
         day = Day.objects.get(date=self.check.date)

@@ -63,6 +63,7 @@ class CheckFromShopTestCase(TestCase):
         self.assertEqual(day.total, Decimal(30.0))
 
     def test_delete_check_from_shop(self):
-        day = Day.objects.get(date=self.check.date)
-        self.check.delete()
+        day = Day.objects.get(date=date(2018, 2, 2))
+        check = CheckFromShop.objects.get(date=date(2018, 2, 2))
+        check.delete()
         self.assertEqual(day.total, Decimal(0))

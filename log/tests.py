@@ -1,5 +1,5 @@
 from django.test import TestCase
-from log.models import Product, CheckFromShop, Shop, Category
+from log.models import Product, CheckFromShop, Shop, Category, Day
 from django.utils.timezone import now
 from decimal import Decimal
 
@@ -37,3 +37,20 @@ class ProductTestCase(TestCase):
         product.cost = 25
         product.save()
         self.assertEqual(check.total, 25)
+
+
+class CheckFromShopTestCase(TestCase):
+
+    def setUp(self):
+        shop = Shop(name="test shop")
+        shop.save()
+        self.check = CheckFromShop(
+            shop=shop,
+            date=now(),
+            total=Decimal(15.0))
+        self.check.save()
+
+    def test_create_check_from_shop(self):
+        day = Day.objects.get(date=self.check.date)
+        self.assertEqual(day.total, 15.0)
+

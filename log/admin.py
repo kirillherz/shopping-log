@@ -1,5 +1,5 @@
 from django.contrib import admin
-from log.models import Category, Product, CheckFromShop, Shop
+from log.models import Category, Product, CheckFromShop, Shop, Day
 
 
 class CategoryAdmin(admin.ModelAdmin):
@@ -22,7 +22,13 @@ admin.site.register(Product, ProductAdmin)
 
 
 class CheckFromShopAdmin(admin.ModelAdmin):
-    pass
+
+    def delete_queryset(self, request, queryset):
+        for check in queryset:
+            day = Day.objects.get(date=check.date)
+            day.total -= check.total
+            day.save()
+        queryset.delete()
 
 
 admin.site.register(CheckFromShop, CheckFromShopAdmin)

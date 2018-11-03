@@ -58,6 +58,12 @@ class CheckFromShop(models.Model):
             day.save()
         super(CheckFromShop, self).save(*args, **kwargs)
 
+    def delete(self, *args, **kwargs):
+        day = Day.objects.get(date=self.date)
+        day.total -= self.total
+        day.save()
+        super(CheckFromShop, self).delete(*args, **kwargs)
+
     class Meta:
         verbose_name = 'Чек'
         verbose_name_plural = 'Чеки'

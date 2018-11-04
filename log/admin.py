@@ -26,8 +26,11 @@ class CheckFromShopAdmin(admin.ModelAdmin):
     def delete_queryset(self, request, queryset):
         for check in queryset:
             day = Day.objects.get(date=check.date)
-            day.total -= check.total
-            day.save()
+            if CheckFromShop.objects.filter(date = check.date).count() > 1:
+                day.total -= check.total
+                day.save()
+            else:
+                day.delete()
         queryset.delete()
 
 

@@ -87,6 +87,9 @@
                         return this.end - this.numberInDiaposon + this.start;
                     }
                 },
+                getPercentage: function (a, b) {
+                    return a / (b / 100);
+                }
             },
             created: function () {
                 var date = new Date(2018, 0, 1);
@@ -96,15 +99,14 @@
                     );
                     date.setDate(date.getDate() + 1);
                 }
-
             },
             mounted: function () {
                 var jsonDayObjects = this.getJson();
-                var onePercent = this.getMaxTotal(jsonDayObjects) / 100;
+                var maxTotal = this.getMaxTotal(jsonDayObjects);
                 for (var i = 0; i != jsonDayObjects.length; i++) {
-                    var diaposon = new this.Diaposon(20, 90, jsonDayObjects[i].fields.total / onePercent);
+                    var percent = this.getPercentage(jsonDayObjects[i].fields.total, maxTotal);
+                    var diaposon = new this.Diaposon(20, 90, percent);
                     color = Number.parseInt(diaposon.inversionNumberInDiaposon);
-                    console.log(color);
                     document.getElementById(jsonDayObjects[i].fields.date).style.backgroundColor = "hsl(0,100%," + color + "%)";
                 }
             }

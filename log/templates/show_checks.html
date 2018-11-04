@@ -74,12 +74,19 @@
                         return null;
                     }
                 },
-                getPercentInDiaposon(start, end, percent) {
-                    return (((end - start) / 100) * percent) + start;
+                Diaposon: class {
+                    constructor(start, end, value) {
+                        this.start = start;
+                        this.end = end;
+                        this.value = value;
+                    }
+                    get numberInDiaposon() {
+                        return (((this.end - this.start) / 100) * this.value) + this.start;
+                    }
+                    get inversionNumberInDiaposon() {
+                        return this.end - this.numberInDiaposon + this.start;
+                    }
                 },
-                getInversionInDiaposon(start, end, percent) {
-                    return end - percent + start;
-                }
             },
             created: function () {
                 var date = new Date(2018, 0, 1);
@@ -95,8 +102,8 @@
                 var jsonDayObjects = this.getJson();
                 var onePercent = this.getMaxTotal(jsonDayObjects) / 100;
                 for (var i = 0; i != jsonDayObjects.length; i++) {
-                    var percents = jsonDayObjects[i].fields.total / onePercent;
-                    color = Number.parseInt(this.getInversionInDiaposon(20, 90, this.getPercentInDiaposon(20, 90, percents)));
+                    var diaposon = new this.Diaposon(20, 90, jsonDayObjects[i].fields.total / onePercent);
+                    color = Number.parseInt(diaposon.inversionNumberInDiaposon);
                     console.log(color);
                     document.getElementById(jsonDayObjects[i].fields.date).style.backgroundColor = "hsl(0,100%," + color + "%)";
                 }

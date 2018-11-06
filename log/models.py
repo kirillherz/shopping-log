@@ -26,7 +26,14 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
 
-
+class DayManager(models.Manager):
+    def getDay(self,date):
+        dayQyerySet = self.get_queryset().filter(date = date)
+        if dayQyerySet.count():
+            return dayQyerySet.get(date = date)
+        else:
+            return Day(total = 0, date = date)
+            
 class Day(models.Model):
 
     date = models.DateField(unique=True)

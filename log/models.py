@@ -36,6 +36,8 @@ class DayManager(models.Manager):
             
 class Day(models.Model):
 
+    dayManager = DayManager()
+    objects = models.Manager()
     date = models.DateField(unique=True)
     total = models.DecimalField(max_digits=15, decimal_places=2)
 

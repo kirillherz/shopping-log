@@ -26,14 +26,16 @@ class Shop(models.Model):
     def __str__(self):
         return self.name
 
+
 class DayManager(models.Manager):
-    def getDay(self,date):
-        dayQyerySet = self.get_queryset().filter(date = date)
+    def getDay(self, date):
+        dayQyerySet = self.get_queryset().filter(date=date)
         if dayQyerySet.count():
-            return dayQyerySet.get(date = date)
+            return dayQyerySet.get(date=date)
         else:
-            return Day(total = 0, date = date)
-            
+            return Day(total=0, date=date)
+
+
 class Day(models.Model):
 
     dayManager = DayManager()
@@ -52,19 +54,14 @@ class CheckFromShop(models.Model):
         return "Чек из магазина " + self.shop.name
 
     def save(self, *args, **kwargs):
-        dayQuerySet = Day.objects.filter(date=self.date)
-        if dayQuerySet.count():
-            day = dayQuerySet[0]
-            if self.id == None:
-                day.total += self.total
-            else:
-                old_checkFromShop = CheckFromShop.objects.get(pk=self.id)
-                day.total -= old_checkFromShop.total
-                day.total += self.total
-            day.save()
+        day = Day.dayManager.getDay(date=self.date)
+        if self.id == None:
+            day.total += self.total
         else:
-            day = Day(date=self.date, total=self.total)
-            day.save()
+            old_checkFromShop = CheckFromShop.objects.get(pk=self.id)
+            day.total -= old_checkFromShop.total
+            day.total += self.total
+        day.save()
         super(CheckFromShop, self).save(*args, **kwargs)
 
     def delete(self, *args, **kwargs):

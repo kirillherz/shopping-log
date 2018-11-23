@@ -37,7 +37,7 @@
             visibility: hidden;
             /* ...и скрыт. */
 
-           
+
             /* Добавить плавности по вкусу */
         }
 
@@ -51,11 +51,11 @@
 </head>
 
 <body>
+    {% csrf_token %}
     <div id="app" class="app">
         <div v-for="day in data">
-            <div class="test" v-bind:id="day"></div>
+            <div class="test" v-on:click="click2" v-bind:id="day"></div>
         </div>
-
     </div>
     <script>
         const app = new Vue({
@@ -64,6 +64,30 @@
                 data: []
             },
             methods: {
+                click2: function (event) {
+                    console.log(this.getJsonChecks(event.target.id));
+
+                },
+                getJsonChecks: function (date) {
+                    var xhr = new XMLHttpRequest();
+                    var json = JSON.stringify({
+                        date: date
+                    })
+                    var csrftoken = document.getElementsByName("csrfmiddlewaretoken")[0].value;
+                    var result = "";
+                    xhr.onreadystatechange = function () {
+                        if (this.readyState == 4 && this.status == 200) {
+                            // Typical action to be performed when the document is ready:
+                             console.log(xhr.responseText);
+                        }
+                    };
+                    xhr.open('POST', '/get_checks/', true);
+                    xhr.setRequestHeader('X-CSRFToken', csrftoken);
+                    xhr.setRequestHeader("X-Requested-With", "XMLHttpRequest");
+                    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+                    xhr.send("json=" + json);
+                    
+                },
                 getJson: function () {
                     var xhr = new XMLHttpRequest();
                     xhr.open('GET', '/get_json/', false);

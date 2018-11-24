@@ -52,7 +52,7 @@
 
 <body>
     {% csrf_token %}
-    <div id="app" >
+    <div id="app">
         <div class="app">
             <div v-for="day in data">
                 <div class="test" v-on:click="click2" v-bind:id="day"></div>
@@ -73,7 +73,7 @@
             },
             methods: {
                 click2: function (event) {
-                    console.log(this.getJsonChecks(event.target.id));
+                    this.getJsonChecks(event.target.id);
 
                 },
                 getJsonChecks: function (date) {

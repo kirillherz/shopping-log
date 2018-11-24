@@ -4,7 +4,7 @@ from django.core.serializers import serialize, deserialize
 from log.models import Day, CheckFromShop
 import json
 import datetime
-import json
+
 
 
 def show_checks(request):
@@ -22,12 +22,11 @@ def get_json(request):
 
 def get_checks(request):
     if request.is_ajax():
-        data = json.loads(request.POST.get("json"))
-        str_date = data["date"]
+        data = json.loads(request.POST.get("json")) 
         try:
-            datetime.datetime.strptime(str_date, "%Y-%m-%d")
+            date = datetime.datetime.strptime(data["date"], "%Y-%m-%d")
         except:
             return HttpResponse(json.dumps([]))
-        return HttpResponse(CheckFromShop.json.all(str_date))
+        return HttpResponse(CheckFromShop.json.all(date))
     else:
         return HttpResponse("test")

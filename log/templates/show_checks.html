@@ -58,8 +58,8 @@
                 <div class="test" v-on:click="click2" v-bind:id="day"></div>
             </div>
         </div>
+            <span v-text="date"></span>
         <div v-for="check in checks">
-            <span v-html="check.date"></span>
             стоимость: <span v-html="check.total"></span>
             из магазина: <span v-html="check.name"></span>
         </div>
@@ -70,10 +70,13 @@
             data: {
                 data: [],
                 checks: [],
+                date: undefined,
             },
             methods: {
                 click2: function (event) {
                     this.getJsonChecks(event.target.id);
+                    this.date = event.target.id;
+
 
                 },
                 getJsonChecks: function (date) {

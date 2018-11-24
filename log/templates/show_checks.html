@@ -56,12 +56,17 @@
         <div v-for="day in data">
             <div class="test" v-on:click="click2" v-bind:id="day"></div>
         </div>
+        <div v-for="check in checks">
+           <span v-html="check.fields.date"></span>
+           <span v-html="check.fields.total"></span>
+        </div>
     </div>
     <script>
         const app = new Vue({
             el: "#app",
             data: {
-                data: []
+                data: [],
+                checks:[],
             },
             methods: {
                 click2: function (event) {
@@ -78,7 +83,7 @@
                     xhr.onreadystatechange = function () {
                         if (this.readyState == 4 && this.status == 200) {
                             // Typical action to be performed when the document is ready:
-                             console.log(xhr.responseText);
+                            app.checks = JSON.parse(xhr.responseText);
                         }
                     };
                     xhr.open('POST', '/get_checks/', true);

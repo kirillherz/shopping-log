@@ -28,19 +28,6 @@ def get_checks(request):
             datetime.datetime.strptime(str_date, "%Y-%m-%d")
         except:
             return HttpResponse(json.dumps([]))
-        from django.db import connection
-        cursor = connection.cursor()
-        cursor.execute('''
-            SELECT log_checkfromshop.id, total, log_shop."name", date
-            FROM log_checkfromshop
-            LEFT JOIN log_shop 
-            ON log_shop.id = log_checkfromshop.shop_id
-            WHERE date = %s''', [str_date])
-        desc = cursor.description
-        rows = [dict(zip([col[0] for col in desc], row))
-                for row in cursor.fetchall()]
-        print(json.dumps(rows, default=str))
-
-        return HttpResponse(json.dumps(rows, default=str))
+        return HttpResponse(CheckFromShop.json.all(str_date))
     else:
         return HttpResponse("test")
